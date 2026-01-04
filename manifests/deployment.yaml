@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traffic-classifier-deployment
+spec:
+  selector:
+    matchLabels:
+      app: traffic-classifier
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: traffic-classifier
+    spec:
+      containers:
+      - name: traffic-classifier
+        image: traffic-classifier:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"            
+          limits:
+            memory: "512Mi"
+            cpu: "200m"
+        ports:
+        - containerPort: 8080

@@ -185,6 +185,9 @@ EDA results motivated:
 ```
 Traffic-Sign-CNN-Pytorch/
 │
+├── manifests/ # Kubernetes
+│ ├── deployment.yaml
+│ └── service.yaml
 ├── model/ # Trained & exported models
 │ ├── efficientnet_b0_20_0.849.pth
 │ ├── traffic_sign_efficientnet_b0.onnx
@@ -208,6 +211,14 @@ Traffic-Sign-CNN-Pytorch/
 ├── .python-version # Python version
 └── README.md # Project documentation
 ```
+
+## Performance Metrics
+
+Validation Accuracy: 84.9% on the validation set
+
+Model Size: 15.39 MB (ONNX format)
+
+Input Resolution: 224 × 224 pixels (automatically resized)
 
 ## Notebook
 
@@ -274,6 +285,8 @@ Example response:
 
 - AWS EC2 (Free Tier compatible)
 
+- Kubernetes (Local with kind)
+
 
 ## How-To Run
 ### 🧪 1. Local Testing (Without Docker)
@@ -299,6 +312,10 @@ uv run python src/test_local.py
 ```
 
 ## 🐳 2. Docker Testing (Recommended)
+
+### ✅ Prerequisites
+
+- Docker
 
 ### Step 1: Build Docker image
 ```
@@ -378,11 +395,79 @@ docker run -d -p 8080:8080 traffic-classifier
 curl http://<EC2_PUBLIC_IP>:8080/health
 ```
 
-## 📊 Performance Metrics
+## ☸️ 4. Kubernetes Deployment (Local with kind)
 
-Validation Accuracy: 84.9% on the validation set
+### ✅ Prerequisites
+- Docker
+- `kubectl`
+- `kind`
+- Local Docker image: `traffic-classifier:latest`
 
-Model Size: 15.39 MB (ONNX format)
+### Step 1: Create a kind cluster
+```
+kind create cluster --name cnn
+```
+Verify the cluster:
 
-Input Resolution: 224 × 224 pixels (automatically resized)
+```
+kubectl cluster-info
+kubectl get nodes
+```
+### Step 2: Load Docker image into kind
 
+Local Docker images must be explicitly loaded into the kind cluster.
+
+``` 
+kind load docker-image traffic-classifier:latest --name cnn
+```
+Verify the image is available inside the cluster:
+
+```
+docker exec -it cnn-control-plane crictl images | grep traffic
+```
+### Step 3: Deploy Kubernetes manifests
+
+Apply the Deployment and Service manifests:
+
+```
+kubectl apply -f manifests/deployment.yaml
+kubectl apply -f manifests/service.yaml
+```
+Check resource status:
+
+```
+kubectl get pods
+kubectl get svc
+```
+### Step 4: Port-forward the service
+
+Expose the service locally using port forwarding:
+
+```
+kubectl port-forward service/traffic-classifier-service 30080:8080
+```
+The API will be accessible at:
+
+```http://localhost:30080```
+### Step 5: Verify health endpoint
+```
+curl http://localhost:30080/health
+```
+
+Expected response:
+
+```
+{ "status": "healthy" }
+```
+### Step 6: Test prediction endpoint
+```
+curl -X POST http://localhost:30080/predict \
+  -F "file=@test-images/sign1.png"
+```
+### 🧹 Cleanup
+
+Delete the kind cluster when finished:
+
+```
+kind delete cluster --name cnn
+```
