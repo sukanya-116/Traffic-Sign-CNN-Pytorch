@@ -198,7 +198,8 @@ Traffic-Sign-CNN-Pytorch/
 │
 ├── src/
 │ ├── app.py # FastAPI inference server (ONNX Runtime)
-│ └── test_local.py # Client script for testing predictions
+| ├── test_local.py # Client script for testing predictions
+│ └── train.py # Script to train the  model
 │
 ├── test-images/ # Sample images for testing
 │ ├── sign1.png
@@ -249,8 +250,22 @@ The notebook contains the entire research and training workflow:
 10. ONNX export for deployment
 
 📌 **Note**
-The notebook is **not required for inference**.
-It is used only to train and export the model.
+The notebook is **not required for inference**. It is used only to train and export the model.
+
+## Train the model
+
+Sync the project environment and install required packages using uv
+```
+uv sync
+uv add kagglehub torch torchvision
+```
+
+Train the Model
+```
+uv run src/train.py
+```
+📌 **Note**
+The script is **not required for inference**. It is used only to train and export the model.
 
 ## 🔮 API Endpoint
 
@@ -394,6 +409,7 @@ docker run -d -p 8080:8080 traffic-classifier
 ```
 curl http://<EC2_PUBLIC_IP>:8080/health
 ```
+![alt text](AWS.png)
 
 ## ☸️ 4. Kubernetes Deployment (Local with kind)
 
