@@ -1,6 +1,8 @@
 # Traffic Sign Prediction (GTSRB)
 **EfficientNet-B0 | PyTorch | ONNX | FastAPI | Docker**
 
+![alt text](<Traffic sign classifier.png>)
+
 This project is an end-to-end **traffic sign image classification system** built on the **German Traffic Sign Recognition Benchmark (GTSRB)** dataset.
 
 It covers the full machine learning lifecycle:
@@ -188,6 +190,7 @@ Traffic-Sign-CNN-Pytorch/
 ├── manifests/ # Kubernetes
 │ ├── deployment.yaml
 │ └── service.yaml
+|
 ├── model/ # Trained & exported models
 │ ├── efficientnet_b0_20_0.849.pth
 │ ├── traffic_sign_efficientnet_b0.onnx
