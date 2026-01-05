@@ -345,7 +345,8 @@ docker build --no-cache -t traffic-classifier .
 ```
 docker run -it --rm -p 8080:8080 traffic-classifier
 ```
-<video controls src="assets/start-app.mp4" title="start-app" width="400"></video>
+
+<img src="assets/start-app.gif" width="400" alt="Start App">
 
 ### Step 3: Verify health
 ```
@@ -360,7 +361,8 @@ Expected response:
 ```
 uv run python src/test_local.py
 ```
-<video controls src="assets/test-app.mp4" title="test-app" width="400"></video>
+
+<img src="assets/test-app.gif" width="400" alt="Test App">
 
 ## ☁️ 3. Cloud Deployment (AWS EC2 – Free Tier)
 
