@@ -1,7 +1,7 @@
 # Traffic Sign Prediction (GTSRB)
 **EfficientNet-B0 | PyTorch | ONNX | FastAPI | Docker**
 
-![alt text](<Traffic sign classifier.png>)
+![alt text](<assets/Traffic sign classifier.png>)
 
 This project is an end-to-end **traffic sign image classification system** built on the **German Traffic Sign Recognition Benchmark (GTSRB)** dataset.
 
@@ -186,7 +186,7 @@ EDA results motivated:
 
 ```
 Traffic-Sign-CNN-Pytorch/
-│
+|
 ├── manifests/ # Kubernetes
 │ ├── deployment.yaml
 │ └── service.yaml
@@ -209,6 +209,7 @@ Traffic-Sign-CNN-Pytorch/
 │ ├── sign2.png
 │ └── sign3.jpg
 │
+├── assets/
 ├── Dockerfile # Docker image definition
 ├── pyproject.toml # Python dependencies
 ├── uv.lock # Locked dependency versions
@@ -344,6 +345,7 @@ docker build --no-cache -t traffic-classifier .
 ```
 docker run -it --rm -p 8080:8080 traffic-classifier
 ```
+<video controls src="assets/start-app.mp4" title="start-app" width="400"></video>
 
 ### Step 3: Verify health
 ```
@@ -358,6 +360,7 @@ Expected response:
 ```
 uv run python src/test_local.py
 ```
+<video controls src="assets/test-app.mp4" title="test-app" width="400"></video>
 
 ## ☁️ 3. Cloud Deployment (AWS EC2 – Free Tier)
 
@@ -412,7 +415,7 @@ docker run -d -p 8080:8080 traffic-classifier
 ```
 curl http://<EC2_PUBLIC_IP>:8080/health
 ```
-![alt text](AWS.png)
+![alt text](assets/AWS.png)
 
 ## ☸️ 4. Kubernetes Deployment (Local with kind)
 
